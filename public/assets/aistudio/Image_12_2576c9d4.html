@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradePay Exporter - AI Multi-Agent Command Center</title>
+<!-- Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#004c6e",
+            "secondary-fixed-dim": "#89ceff",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "tertiary-container": "#002113",
+            "surface-container-low": "#eff4ff",
+            "primary-fixed": "#dae2fd",
+            "primary-fixed-dim": "#bec6e0",
+            "background": "#f8f9ff",
+            "secondary": "#006591",
+            "inverse-primary": "#bec6e0",
+            "primary": "#000000",
+            "surface-variant": "#d3e4fe",
+            "secondary-container": "#39b8fd",
+            "on-surface": "#0b1c30",
+            "surface-bright": "#f8f9ff",
+            "on-background": "#0b1c30",
+            "inverse-on-surface": "#eaf1ff",
+            "tertiary": "#000000",
+            "on-tertiary-container": "#009668",
+            "surface-container-high": "#dce9ff",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#3f465c",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#c9e6ff",
+            "on-secondary-container": "#004666",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "on-primary-container": "#7c839b",
+            "primary-container": "#131b2e",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "surface-tint": "#565e74",
+            "outline-variant": "#c6c6cd",
+            "on-secondary-fixed": "#001e2f",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-surface-variant": "#45464d",
+            "on-tertiary-fixed": "#002113",
+            "inverse-surface": "#213145",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed": "#131b2e",
+            "surface-container-highest": "#d3e4fe",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container": "#e5eeff",
+            "surface": "#f8f9ff",
+            "on-error": "#ffffff",
+            "outline": "#76777d"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "1.75rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.25rem",
+            "gutter-desktop": "1.25rem",
+            "space-xs": "0.25rem",
+            "gutter": "0.75rem",
+            "margin": "1rem",
+            "margin-desktop": "2rem",
+            "space-md": "0.875rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Inter"],
+            "code-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "code-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Tabular numeric clarity for financial operations */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased pb-24 selection:bg-secondary-fixed selection:text-on-secondary-fixed min-h-screen flex flex-col justify-between">
+<!-- ========================================== -->
+<!-- TopAppBar Component (from Shared JSON)     -->
+<!-- ========================================== -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest dark:bg-primary-container shadow-sm dark:shadow-none transition-colors duration-150 ease-in-out">
+<div class="flex justify-between items-center w-full px-4 md:px-6 h-14">
+<div class="flex items-center space-x-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary dark:text-inverse-primary border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="anchor">anchor</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface tracking-tight block">TradePay Exporter</span>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<!-- Bot Agent Status Chip -->
+<div class="flex items-center space-x-1.5 px-2 py-1 rounded bg-surface-container-high border border-outline-variant">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+</span>
+<span class="text-label-sm font-label-sm text-on-surface">5 Agents Active</span>
+</div>
+<button aria-label="Notifications" class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-inverse-surface hover:text-on-surface transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<!-- ========================================== -->
+<!-- Main Content Canvas (Mobile Responsive)   -->
+<!-- ========================================== -->
+<main class="w-full max-w-md mx-auto px-margin py-space-sm space-y-space-md">
+<!-- Screen Title Bar -->
+<div class="flex items-center justify-between pt-1">
+<div>
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">AI Multi-Agent Command Center</h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Real-time trade operations &amp; autonomous ledger auditing</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-1.5 shadow-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+</div>
+</div>
+<!-- 1. Header Card: Autonomous Multi-Agent Workflow Engine -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-space-md shadow-sm">
+<div class="flex items-start justify-between mb-space-sm">
+<div class="space-y-0.5">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider block">Orchestration Mesh</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Autonomous Multi-Agent Workflow Engine</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface text-label-sm font-label-sm border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Synced
+        </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-space-md">All 5 Agents Synchronized &amp; Operating with zero telemetry latency.</p>
+<!-- Visual Pipeline: 5 Agents -->
+<div class="space-y-2 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-surface-container-high">
+<!-- Agent 1 -->
+<div class="relative flex items-center space-x-3 pl-1 bg-surface-bright p-2 rounded border border-outline-variant/60">
+<div class="z-10 w-5 h-5 rounded-full bg-primary-container text-inverse-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[13px]" data-icon="insights">insights</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface truncate">Agent 1: Executive Briefing Agent</span>
+<span class="text-label-sm font-label-sm text-secondary bg-surface-container px-1.5 py-0.2 rounded border border-outline-variant">98% Acc</span>
+</div>
+<p class="text-code-sm font-code-sm text-on-surface-variant">Active • Real-time synthesis</p>
+</div>
+</div>
+<!-- Agent 2 -->
+<div class="relative flex items-center space-x-3 pl-1 bg-surface-bright p-2 rounded border border-outline-variant/60">
+<div class="z-10 w-5 h-5 rounded-full bg-primary-container text-inverse-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[13px]" data-icon="directions_boat">directions_boat</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface truncate">Agent 2: Marine AIS Vessel &amp; B/L</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-low px-1.5 rounded">Querying</span>
+</div>
+<p class="text-code-sm font-code-sm text-on-surface-variant">MarineTraffic &amp; Port APIs connected</p>
+</div>
+</div>
+<!-- Agent 3 -->
+<div class="relative flex items-center space-x-3 pl-1 bg-surface-bright p-2 rounded border border-outline-variant/60">
+<div class="z-10 w-5 h-5 rounded-full bg-primary-container text-inverse-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[13px]" data-icon="document_scanner">document_scanner</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface truncate">Agent 3: Document Intake &amp; OCR</span>
+<span class="text-label-sm font-label-sm text-secondary bg-surface-container px-1.5 rounded">Archiving</span>
+</div>
+<p class="text-code-sm font-code-sm text-on-surface-variant">Filing into secure cold storage (SHA-256)</p>
+</div>
+</div>
+<!-- Agent 4 -->
+<div class="relative flex items-center space-x-3 pl-1 bg-surface-bright p-2 rounded border border-outline-variant/60">
+<div class="z-10 w-5 h-5 rounded-full bg-primary-container text-inverse-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[13px]" data-icon="folder_copy">folder_copy</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface truncate">Agent 4: Invoice Hierarchy Organizer</span>
+<span class="text-label-sm font-label-sm text-on-surface bg-surface-container-high px-1.5 rounded">Active</span>
+</div>
+<p class="text-code-sm font-code-sm text-on-surface-variant">Tagging &amp; linking docs to parent INV #</p>
+</div>
+</div>
+<!-- Agent 5 -->
+<div class="relative flex items-center space-x-3 pl-1 bg-surface-bright p-2 rounded border border-outline-variant/60">
+<div class="z-10 w-5 h-5 rounded-full bg-primary-container text-inverse-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[13px]" data-icon="account_balance">account_balance</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface truncate">Agent 5: Net P&amp;L &amp; Credit Note Auditor</span>
+<span class="text-label-sm font-label-sm text-secondary bg-surface-container px-1.5 rounded">Live Calc</span>
+</div>
+<p class="text-code-sm font-code-sm text-on-surface-variant">Real-time margin delta recalculation</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Live Executive Overview Agent Summary Card -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-space-md shadow-sm">
+<div class="flex items-center space-x-2 mb-2">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="auto_awesome">auto_awesome</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Live Executive Overview Agent Summary</h2>
+</div>
+<!-- Overview Metrics Rack -->
+<div class="grid grid-cols-2 gap-2 mb-space-sm">
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant/50">
+<span class="text-label-sm font-label-sm text-on-surface-variant block">Active Ocean Freight</span>
+<span class="text-headline-sm font-headline-sm text-on-surface font-bold">3 Shipments</span>
+<span class="text-code-sm font-code-sm text-secondary block mt-0.5">En route to POD</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant/50">
+<span class="text-label-sm font-label-sm text-on-surface-variant block">Pending Collections</span>
+<span class="text-headline-sm font-headline-sm text-on-surface font-bold tabular-nums">$314,250</span>
+<span class="text-code-sm font-code-sm text-on-surface-variant block mt-0.5">Across 4 Escrow accounts</span>
+</div>
+</div>
+<!-- Real-time Agent Notice / Delay Alert -->
+<div class="bg-surface-container-low border-l-4 border-secondary p-3 rounded-r mb-space-md text-body-sm font-body-sm text-on-surface">
+<div class="flex items-start space-x-2">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5" data-icon="warning">warning</span>
+<div class="space-y-1">
+<span class="text-label-md font-label-md text-on-surface font-semibold block">Feeder Transshipment Delay Detected</span>
+<p class="text-on-surface-variant">Feeder vessel <span class="font-semibold text-on-surface">CMA CGM Pegasus</span> incurred <span class="font-semibold text-on-surface">+14h delay</span> at Port of Singapore. Automatic escrow condition triggers adjusted by 18 hours.</p>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center justify-center space-x-1.5 py-2 px-3 bg-surface-container text-on-surface rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-label-md font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="forum">forum</span>
+<span>Ask Agent</span>
+</button>
+<button class="flex items-center justify-center space-x-1.5 py-2 px-3 bg-primary text-on-primary rounded hover:bg-inverse-surface transition-colors text-label-md font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span>Export Summary PDF</span>
+</button>
+</div>
+</section>
+<!-- 3. Invoice & Sales Contract Numbering Configuration -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-space-md shadow-sm space-y-space-md">
+<div>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary" data-icon="tag">tag</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Numbering Configuration</h2>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Global Prefix/Suffix parameters for automated document generation</p>
+</div>
+<!-- Sales Contract Formatter -->
+<div class="bg-surface-container-low/60 p-3 rounded border border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface">Sales Contract Format</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant font-mono">SC-8841/2025</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="text-label-sm font-label-sm text-on-surface-variant mb-1 block">Prefix</label>
+<input class="w-full text-code-sm font-code-sm font-mono bg-surface-container-lowest border border-outline-variant rounded px-2.5 py-1.5 focus:border-secondary focus:ring-0" type="text" value="SC-"/>
+</div>
+<div>
+<label class="text-label-sm font-label-sm text-on-surface-variant mb-1 block">Suffix</label>
+<input class="w-full text-code-sm font-code-sm font-mono bg-surface-container-lowest border border-outline-variant rounded px-2.5 py-1.5 focus:border-secondary focus:ring-0" type="text" value="/2025"/>
+</div>
+</div>
+</div>
+<!-- Commercial Invoice Formatter -->
+<div class="bg-surface-container-low/60 p-3 rounded border border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface">Commercial Invoice Format</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant font-mono">EXP-INV-2024-884-DXB</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="text-label-sm font-label-sm text-on-surface-variant mb-1 block">Prefix</label>
+<input class="w-full text-code-sm font-code-sm font-mono bg-surface-container-lowest border border-outline-variant rounded px-2.5 py-1.5 focus:border-secondary focus:ring-0" type="text" value="EXP-INV-"/>
+</div>
+<div>
+<label class="text-label-sm font-label-sm text-on-surface-variant mb-1 block">Suffix</label>
+<input class="w-full text-code-sm font-code-sm font-mono bg-surface-container-lowest border border-outline-variant rounded px-2.5 py-1.5 focus:border-secondary focus:ring-0" type="text" value="-DXB"/>
+</div>
+</div>
+</div>
+<!-- Credit Note Formatter -->
+<div class="bg-surface-container-low/60 p-3 rounded border border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface">Credit Note Format</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant font-mono">CN-091-ADJ</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="text-label-sm font-label-sm text-on-surface-variant mb-1 block">Prefix</label>
+<input class="w-full text-code-sm font-code-sm font-mono bg-surface-container-lowest border border-outline-variant rounded px-2.5 py-1.5 focus:border-secondary focus:ring-0" type="text" value="CN-"/>
+</div>
+<div>
+<label class="text-label-sm font-label-sm text-on-surface-variant mb-1 block">Suffix</label>
+<input class="w-full text-code-sm font-code-sm font-mono bg-surface-container-lowest border border-outline-variant rounded px-2.5 py-1.5 focus:border-secondary focus:ring-0" type="text" value="-ADJ"/>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 bg-primary text-on-primary rounded text-label-md font-label-md hover:bg-inverse-surface transition-colors flex items-center justify-center space-x-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="sync">sync</span>
+<span>Save &amp; Sync to Numbering Generator</span>
+</button>
+</section>
+<!-- 4. Quick Agent Task Queue -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary" data-icon="playlist_play">playlist_play</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Agent Task Queue</h2>
+</div>
+<span class="text-code-sm font-code-sm text-on-surface-variant tabular-nums">3 items active</span>
+</div>
+<div class="space-y-2">
+<!-- Task Item 1 -->
+<div class="p-2.5 rounded border border-outline-variant/70 bg-surface-bright flex items-start space-x-2.5">
+<span class="p-1 rounded bg-surface-container text-secondary text-[16px] shrink-0">
+<span class="material-symbols-outlined" data-icon="directions_boat">directions_boat</span>
+</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface">Agent 2 (Maritime AIS)</span>
+<span class="text-label-sm font-label-sm text-secondary">In Flight</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+              Cross-verifying container <span class="font-mono text-on-surface font-medium">MEDU7482910</span> on connective vessel at Busan.
+            </p>
+</div>
+</div>
+<!-- Task Item 2 -->
+<div class="p-2.5 rounded border border-outline-variant/70 bg-surface-bright flex items-start space-x-2.5">
+<span class="p-1 rounded bg-surface-container text-secondary text-[16px] shrink-0">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface">Agents 3 &amp; 4 (OCR + Hierarchy)</span>
+<span class="text-label-sm font-label-sm text-on-surface">Completed</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+              Auto-filed 3 bills of lading into INV <span class="font-mono text-on-surface font-medium">#EXP-2024-884</span>.
+            </p>
+</div>
+</div>
+<!-- Task Item 3 -->
+<div class="p-2.5 rounded border border-outline-variant/70 bg-surface-bright flex items-start space-x-2.5">
+<span class="p-1 rounded bg-surface-container text-secondary text-[16px] shrink-0">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface">Agent 5 (P&amp;L Auditor)</span>
+<span class="text-label-sm font-label-sm text-secondary">Verified</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+              Deducted Credit Note <span class="font-mono text-on-surface font-medium">#CN-102</span> (<span class="tabular-nums font-semibold">$3,200</span>) for cargo moisture discrepancy.
+            </p>
+</div>
+</div>
+</div>
+<!-- Action Row -->
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="py-2 px-3 border border-outline-variant rounded bg-surface-container-lowest text-on-surface text-label-md font-label-md hover:bg-surface-container transition-colors flex items-center justify-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="tune">tune</span>
+<span>Configure Agent Triggers</span>
+</button>
+<button class="py-2 px-3 border border-outline-variant rounded bg-surface-container-lowest text-on-surface text-label-md font-label-md hover:bg-surface-container transition-colors flex items-center justify-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="terminal">terminal</span>
+<span>Agent Log Stream</span>
+</button>
+</div>
+</section>
+</main>
+<!-- ========================================== -->
+<!-- BottomNavBar Component (from Shared JSON)  -->
+<!-- Active Tab: Agents                         -->
+<!-- ========================================== -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-surface-container-lowest dark:bg-primary-container border-t border-outline-variant dark:border-outline shadow-md dark:shadow-none">
+<!-- Tab 1: Agents (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-semibold active:scale-95 transition-transform duration-100 flex-1 py-1" href="#agents">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+<span class="text-label-sm font-label-sm mt-0.5">Agents</span>
+</a>
+<!-- Tab 2: Shipments (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1 py-1" href="#shipments">
+<span class="material-symbols-outlined text-[20px]" data-icon="directions_boat">directions_boat</span>
+<span class="text-label-sm font-label-sm mt-0.5">Shipments</span>
+</a>
+<!-- Tab 3: Documents (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1 py-1" href="#documents">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-sm font-label-sm mt-0.5">Documents</span>
+</a>
+<!-- Tab 4: P&L Monitor (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1 py-1" href="#pnl-monitor">
+<span class="material-symbols-outlined text-[20px]" data-icon="monitoring">monitoring</span>
+<span class="text-label-sm font-label-sm mt-0.5">P&amp;L Monitor</span>
+</a>
+<!-- Tab 5: Settings (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1 py-1" href="#settings">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm mt-0.5">Settings</span>
+</a>
+</nav>
+</body></html>

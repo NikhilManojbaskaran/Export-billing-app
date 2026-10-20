@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background text-on-surface" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Real-Time Export P&L & Expenses Monitor</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#004c6e",
+            "secondary-fixed-dim": "#89ceff",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "tertiary-container": "#002113",
+            "surface-container-low": "#eff4ff",
+            "primary-fixed": "#dae2fd",
+            "primary-fixed-dim": "#bec6e0",
+            "background": "#f8f9ff",
+            "secondary": "#006591",
+            "inverse-primary": "#bec6e0",
+            "primary": "#000000",
+            "surface-variant": "#d3e4fe",
+            "secondary-container": "#39b8fd",
+            "on-surface": "#0b1c30",
+            "surface-bright": "#f8f9ff",
+            "on-background": "#0b1c30",
+            "inverse-on-surface": "#eaf1ff",
+            "tertiary": "#000000",
+            "on-tertiary-container": "#009668",
+            "surface-container-high": "#dce9ff",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#3f465c",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#c9e6ff",
+            "on-secondary-container": "#004666",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "on-primary-container": "#7c839b",
+            "primary-container": "#131b2e",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "surface-tint": "#565e74",
+            "outline-variant": "#c6c6cd",
+            "on-secondary-fixed": "#001e2f",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-surface-variant": "#45464d",
+            "on-tertiary-fixed": "#002113",
+            "inverse-surface": "#213145",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed": "#131b2e",
+            "surface-container-highest": "#d3e4fe",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container": "#e5eeff",
+            "surface": "#f8f9ff",
+            "on-error": "#ffffff",
+            "outline": "#76777d"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "1.75rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.25rem",
+            "gutter-desktop": "1.25rem",
+            "space-xs": "0.25rem",
+            "gutter": "0.75rem",
+            "margin": "1rem",
+            "margin-desktop": "2rem",
+            "space-md": "0.875rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Inter"],
+            "code-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "code-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-full flex flex-col justify-between bg-background text-on-surface font-body-md antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed pb-20">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest dark:bg-primary-container shadow-sm dark:shadow-none docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center w-full px-4 md:px-6 h-14">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed" data-icon="anchor">anchor</span>
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface tracking-tight truncate max-w-[210px]">Export P&L & Expenses Monitor</h1>
+</div>
+<!-- Trailing Action: Currency Toggle -->
+<div class="flex items-center bg-surface-container-low p-0.5 rounded-lg border border-outline-variant">
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm font-bold bg-surface-container-lowest text-primary shadow-xs transition-colors" id="toggle-usd">USD</button>
+<button class="px-2 py-0.5 rounded text-label-sm font-label-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-eur">EUR</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="w-full max-w-md mx-auto px-margin pt-space-md pb-space-lg flex flex-col gap-space-md">
+<!-- Agent 5 Live Status Pill -->
+<div class="flex items-center justify-between bg-surface-container-lowest px-space-md py-space-xs rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-on-tertiary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-on-tertiary-container"></span>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Agent 5 Autonomous Ledger</span>
+</div>
+<span class="font-code-sm text-code-sm text-secondary font-semibold bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant">Synced 14s ago</span>
+</div>
+<!-- 1. Executive Net Margin Banner -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant shadow-sm relative overflow-hidden">
+<div class="absolute right-0 top-0 w-28 h-28 bg-surface-container-low rounded-bl-full pointer-events-none -mr-6 -mt-6"></div>
+<div class="relative z-10 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Net Realized Profit</span>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-tertiary-container px-2 py-0.5 rounded font-bold border border-tertiary-fixed-dim inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs leading-none" data-icon="trending_up">trending_up</span> +24.8% Margin
+          </span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface tracking-tight mt-1">
+          $148,650.00
+        </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Real-time ledger audit across active ocean & air consignments</p>
+<!-- Divider -->
+<div class="w-full h-px bg-outline-variant my-space-xs"></div>
+<!-- Metric Inline Sub-Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-0.5">
+<div class="flex flex-col bg-surface-container-low p-2 rounded border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Gross Invoiced Revenue</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface mt-0.5">$520,800.00</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant mt-0.5">14 Invoices Settled</span>
+</div>
+<div class="flex flex-col bg-error-container p-2 rounded border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-error-container">Total Deductions & Exp.</span>
+<span class="font-label-lg text-label-lg font-bold text-error mt-0.5">-$372,150.00</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant mt-0.5">Logistics & Credit Notes</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Credit Notes Adjustment Section -->
+<section class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-0.5">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5">
+            Credit Notes Adjustments
+            <span class="font-code-sm text-code-sm bg-surface-container-high px-1.5 py-0.2 rounded text-secondary font-bold">2 Active</span>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Deducted prior to export profit recognition</p>
+</div>
+</div>
+<!-- Credit Note Cards Rack -->
+<div class="flex flex-col gap-space-sm mt-1">
+<!-- CN Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant shadow-sm flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Credit Note #CN-2024-102</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Consignee: <strong class="text-on-surface">Hamburg Traders GMBH</strong></span>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-tertiary-container px-2 py-0.5 rounded font-semibold border border-tertiary-fixed-dim">
+              Settled & Deducted
+            </span>
+</div>
+<div class="bg-surface-container-low p-2 rounded text-body-sm font-body-sm border border-outline-variant flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Discrepancy:</span>
+<span class="text-on-surface font-medium">Container moisture tolerance</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Linked Export Invoice:</span>
+<span class="font-code-sm text-code-sm text-secondary font-semibold">INV #EXP-2024-884</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Debit Value:</span>
+<span class="font-label-lg text-label-lg font-bold text-error">-$3,200.00 USD</span>
+</div>
+</div>
+<!-- CN Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant shadow-sm flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Credit Note #CN-2024-105</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Consignee: <strong class="text-on-surface">Rotterdam Agro BV</strong></span>
+</div>
+<span class="font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold px-2 py-0.5 rounded border border-secondary-fixed-dim">
+              Pending Escrow Offset
+            </span>
+</div>
+<div class="bg-surface-container-low p-2 rounded text-body-sm font-body-sm border border-outline-variant flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Discrepancy:</span>
+<span class="text-on-surface font-medium">Tariff HS reclassification compensation</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Linked Export Invoice:</span>
+<span class="font-code-sm text-code-sm text-secondary font-semibold">INV #EXP-2024-902</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Escrow Hold Balance:</span>
+<span class="font-label-lg text-label-lg font-bold text-error">-$1,850.00 USD</span>
+</div>
+</div>
+</div>
+<!-- Quick Button -->
+<button class="w-full mt-1 h-11 bg-surface-container-lowest text-primary hover:bg-surface-container-low border border-outline-variant rounded-xl font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-xs">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>
+        + Issue New Credit Note
+      </button>
+</section>
+<!-- 3. All Operational & Logistics Expenses Breakdown -->
+<section class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-0.5">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Logistics & Operation Expenses</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">6 Line Categories</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant px-0.5 -mt-1">Granular deductions required for verified profit recognition</p>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm divide-y divide-outline-variant overflow-hidden">
+<!-- Expense Item 1 -->
+<div class="p-space-sm flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="directions_boat">directions_boat</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Ocean Freight & Bunkerage (BAF)</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Carriers: Hapag-Lloyd / MSC</span>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-error whitespace-nowrap">-$18,400.00</span>
+</div>
+<!-- Expense Item 2 -->
+<div class="p-space-sm flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="verified_user">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Marine Cargo Insurance</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Incoterm CIF Clause A Coverage</span>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-error whitespace-nowrap">-$4,850.00</span>
+</div>
+<!-- Expense Item 3 -->
+<div class="p-space-sm flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="local_shipping">local_shipping</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Customs & Terminal Handling (THC)</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Demurrage buffer + Stevedoring</span>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-error whitespace-nowrap">-$6,200.00</span>
+</div>
+<!-- Expense Item 4 -->
+<div class="p-space-sm flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="pest_control">pest_control</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Fumigation & Phytosanitary Fees</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Border Quarantine Inspection cert</span>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-error whitespace-nowrap">-$2,100.00</span>
+</div>
+<!-- Expense Item 5 -->
+<div class="p-space-sm flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="currency_exchange">currency_exchange</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">FX Hedging & L/C Confirmation</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">BNP Paribas Trade Finance Desk</span>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-error whitespace-nowrap">-$1,450.00</span>
+</div>
+<!-- Expense Item 6 -->
+<div class="p-space-sm flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="rv_hookup">rv_hookup</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Inland Drayage & Haulage</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Santos Port & Miami Transit Hubs</span>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-error whitespace-nowrap">-$5,300.00</span>
+</div>
+</div>
+</section>
+<!-- 4. Per-Invoice P&L Breakdown Card -->
+<section class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-0.5">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Consignment Ledger Breakdown</h2>
+<span class="font-code-sm text-code-sm text-secondary font-bold">1 of 14</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-space-md flex flex-col gap-space-sm">
+<!-- Invoice Header -->
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">#EXP-2024-884</span>
+<span class="font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant px-1.5 py-0.5 rounded border border-outline-variant font-mono">CIF</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Consignee: Hamburg Traders GMBH</span>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-tertiary-container px-2 py-0.5 rounded font-bold border border-tertiary-fixed-dim">
+            Agent 5 Verified
+          </span>
+</div>
+<!-- Ledger Line Items -->
+<div class="bg-surface-container-low p-space-sm rounded-lg border border-outline-variant flex flex-col gap-1.5 text-body-sm font-body-sm">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Gross Invoice Value (EUR €64,500.00):</span>
+<span class="font-medium text-on-surface tabular-nums">+$70,082.50 USD</span>
+</div>
+<div class="flex justify-between items-center text-error">
+<span class="text-on-surface-variant">Less Credit Note #CN-102:</span>
+<span class="font-medium tabular-nums">-$3,200.00 USD</span>
+</div>
+<div class="flex justify-between items-center text-error">
+<span class="text-on-surface-variant">Less Freight, Ins. & Customs:</span>
+<span class="font-medium tabular-nums">-$12,450.00 USD</span>
+</div>
+<div class="flex justify-between items-center text-error">
+<span class="text-on-surface-variant">COGS (Arabica Beans 2x40ft):</span>
+<span class="font-medium tabular-nums">-$38,000.00 USD</span>
+</div>
+</div>
+<!-- Margin Outcome -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Net Realized Margin</span>
+<span class="font-code-sm text-code-sm text-on-tertiary-container font-bold">23.4% Yield Ratio</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-on-tertiary-container tabular-nums">+$16,432.50 USD</span>
+</div>
+</div>
+</section>
+<!-- 5. Quick CTAs -->
+<section class="flex flex-col gap-2 pt-1">
+<button class="w-full h-11 bg-primary text-on-primary hover:bg-inverse-surface rounded-xl font-label-md text-label-md font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="file_download">file_download</span>
+        Download P&L Audit Statement
+      </button>
+<button class="w-full h-11 bg-surface-container-lowest text-primary hover:bg-surface-container-low border border-outline-variant rounded-xl font-label-md text-label-md font-semibold flex items-center justify-center gap-2 shadow-xs transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="tune">tune</span>
+        Set Expense Alert Thresholds
+      </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-surface-container-lowest dark:bg-primary-container border-t border-outline-variant dark:border-outline shadow-md dark:shadow-none">
+<!-- Tab 1: Agents -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1" href="#">
+<span class="material-symbols-outlined text-xl leading-none" data-icon="smart_toy">smart_toy</span>
+<span class="text-label-sm font-label-sm mt-1">Agents</span>
+</a>
+<!-- Tab 2: Shipments -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1" href="#">
+<span class="material-symbols-outlined text-xl leading-none" data-icon="directions_boat">directions_boat</span>
+<span class="text-label-sm font-label-sm mt-1">Shipments</span>
+</a>
+<!-- Tab 3: Documents -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1" href="#">
+<span class="material-symbols-outlined text-xl leading-none" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-sm font-label-sm mt-1">Documents</span>
+</a>
+<!-- Tab 4: P&L Monitor (Active) -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-semibold active:scale-95 transition-transform duration-100 flex-1" href="#">
+<span class="material-symbols-outlined text-xl leading-none" data-icon="monitoring" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span class="text-label-sm font-label-sm mt-1">P&L Monitor</span>
+</a>
+<!-- Tab 5: Settings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-100 flex-1" href="#">
+<span class="material-symbols-outlined text-xl leading-none" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm mt-1">Settings</span>
+</a>
+</nav>
+<!-- Interactive Currency Switch Script -->
+<script>
+    const btnUsd = document.getElementById('toggle-usd');
+    const btnEur = document.getElementById('toggle-eur');
+
+    btnUsd.addEventListener('click', () => {
+      btnUsd.className = 'px-2 py-0.5 rounded text-label-sm font-label-sm font-bold bg-surface-container-lowest text-primary shadow-xs transition-colors';
+      btnEur.className = 'px-2 py-0.5 rounded text-label-sm font-label-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors';
+    });
+
+    btnEur.addEventListener('click', () => {
+      btnEur.className = 'px-2 py-0.5 rounded text-label-sm font-label-sm font-bold bg-surface-container-lowest text-primary shadow-xs transition-colors';
+      btnUsd.className = 'px-2 py-0.5 rounded text-label-sm font-label-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors';
+    });
+  </script>
+</body></html>

@@ -1,0 +1,6 @@
+{
+  "name": "TradePay Exporter - AI Billing & Invoices Command Center",
+  "description": "Multi-agent autonomous billing, marine AIS vessel tracking, invoice document vault, and real-time export P&L ledger auditing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
